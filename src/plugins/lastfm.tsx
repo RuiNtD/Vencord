@@ -172,12 +172,7 @@ export default definePlugin({
             });
 
             const res = await fetch(`https://ws.audioscrobbler.com/2.0/?${params}`);
-            let json: Record<string, any> | null;
-            try {
-                json = await res.json();
-            } catch {
-                json = null;
-            }
+            const json = await res.json().catch(() => null) as Record<string, any> | null;
             if (!res.ok || !json || json.error) {
                 const apiError = json?.message
                     ? `${json.error}: ${json.message}`
